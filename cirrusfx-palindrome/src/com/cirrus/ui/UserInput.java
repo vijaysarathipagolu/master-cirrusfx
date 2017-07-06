@@ -4,6 +4,9 @@
 package com.cirrus.ui;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,7 +36,7 @@ public class UserInput extends Application{
 	@Override
 	public void start(Stage arg0) throws Exception {
 		// TODO Auto-generated method stub
-		
+	
 		
 		arg0.setTitle("CirrsuFx Palindrome Search");
 		BorderPane bPane = new BorderPane();
@@ -77,7 +80,10 @@ public class UserInput extends Application{
 				// TODO Auto-generated method stub
 				String lowBound = lowerBoundTxt.getText().toString();
 				String upBound = upperBoundTxt.getText().toString();
-				
+				String	result = getLargestPalindrome(lowBound, upBound);
+				Text searchResult = new Text("The largest Palindrome Number in the range is: " +result);
+				searchResult.setFont(Font.font("Times New",FontWeight.BOLD,10));
+				gridPane.add(searchResult,1,3);
 			}
 		});
 		
@@ -85,6 +91,35 @@ public class UserInput extends Application{
 		
 		arg0.setScene(sc);
 		arg0.show();
+	}
+	
+	
+	public String getLargestPalindrome(String lowBound, String upBound){
+		
+		List<Integer> al = new ArrayList<Integer>();
+		
+		int lowerBound = Integer.valueOf(lowBound);
+		int upperBound = Integer.valueOf(upBound);
+		
+		for(int i=lowerBound;i<=upperBound; i++ ){
+			int j = i;
+			int sum=0;
+			while(j>0){
+			sum = (sum*10) + (j%10);
+			j = j/10;
+			}
+			
+			if(sum == i)
+			al.add(i);	
+		}
+		
+		al.forEach(System.out::println);
+
+		return	al.stream().max(Integer::compare).get().toString();
+		
+
+		
+		
 	}
 
 	
