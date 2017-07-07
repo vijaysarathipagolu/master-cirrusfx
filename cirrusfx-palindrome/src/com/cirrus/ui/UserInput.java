@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package com.cirrus.ui;
 
 
@@ -26,14 +24,16 @@ import javafx.stage.Stage;
 
 /**
  * @author vijay
+ * 
+ * The class creates a UI console using javaFX for the user to input the 
+ * lower and upper boundary values and displays the largest palindrome
+ * in the given range back to the user in the UI console.
  *
  */
 public class UserInput extends Application{
 
-	
-	
 	public static void main(String[] args){
-		launch(args);
+		launch(args); //launches the application.
 	}
 	
 	@Override
@@ -43,7 +43,6 @@ public class UserInput extends Application{
 		arg0.setTitle("CirrsuFx Palindrome Search");
 		BorderPane bPane = new BorderPane();
 		bPane.setPadding(new Insets(20,70,70,70));
-		
 		
 		HBox hb = new HBox();
 		hb.setPadding(new Insets(10,30,10,30));
@@ -57,51 +56,54 @@ public class UserInput extends Application{
 		gridPane.setVgap(5);
 		gridPane.setHgap(5);
 		
-		Label lowerBoundLabel = new Label("Lower Bound");
+		Label lowerBoundLabel = new Label("Lower Bound: ");
         final TextField lowerBoundTxt = new TextField();
-		Label upperBoundLabel = new Label("Upper Bound");
+		Label upperBoundLabel = new Label("Upper Bound: ");
 		final TextField upperBoundTxt = new TextField();
 		Button searchBtn = new Button("Search");
 		final Label lblSearch = new Label();
 		
-		
-		gridPane.add(lowerBoundLabel,0,0);
+		//Adding the input and search button labels to the gridpane
+		gridPane.add(lowerBoundLabel,0,0); 
 		gridPane.add(lowerBoundTxt,1,0);
 		gridPane.add(upperBoundLabel,0,1);
 		gridPane.add(upperBoundTxt,1,1);
 		gridPane.add(lblSearch, 2, 1);
 		gridPane.add(searchBtn, 1, 2);
 		
-		bPane.setTop(hb);
-		bPane.setCenter(gridPane);
+		bPane.setTop(hb); // adding the horizontal box to the borderpane at the top.
+		bPane.setCenter(gridPane); // adding the gridpane to the borderpane at the center.
+		Label searchResult = new Label(); // label to display the search results and error messages.
 		
+		
+		// this function is used to handle the button onClick action event, it's invoked every time the button is clicked!
 		searchBtn.setOnAction(new EventHandler<ActionEvent>() {
-			
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				String result="";Text searchResult = null;
+				String result="";
+				searchResult.setText(""); //clearing the previous search result every time.
+				
 				try{
 				String lowBound = lowerBoundTxt.getText().toString();
 				String upBound = upperBoundTxt.getText().toString();
-				result = getLargestPalindrome(lowBound, upBound);
-				searchResult = new Text("The largest Palindrome Number in the range is: " +result);
+				result = getLargestPalindrome(lowBound, upBound);  //returns the largest palindrome number as a string
+				searchResult.setText("The largest Palindrome Number in the range is: " +result);
 				searchResult.setFont(Font.font("Times New",FontWeight.BOLD,10));
-				gridPane.add(searchResult,1,3);
-				}catch(NoSuchElementException ne){
+				
+				}catch(NoSuchElementException ne){  // this catch block is used to handle negative number inputs
 					System.out.println(ne.getMessage());
-					searchResult = new Text("The Lower, Upper bound values can't be negative");
+					searchResult.setText("The Lower, Upper bound values can't be negative");
 					searchResult.setFont(Font.font("Times New",FontWeight.BOLD,10));
-					gridPane.add(searchResult,1,3);
-				}catch(NumberFormatException nf){
+				}catch(NumberFormatException nf){  // this catch block is used to handle null inputs
 					System.out.println(nf.getMessage());
-					searchResult = new Text("The input bound values can't be empty");
+					searchResult.setText("The input bound values can't be empty");
 					searchResult.setFont(Font.font("Times New",FontWeight.BOLD,10));
-					gridPane.add(searchResult,1,3);
 				}
 			}
 		});
 		
+		gridPane.add(searchResult,1,3); //adding the search result label to the gridpane
 		Scene sc = new Scene(bPane);
 		
 		arg0.setScene(sc);
@@ -109,14 +111,16 @@ public class UserInput extends Application{
 	}
 	
 	
+	
+	/*
+	 * This method returns the Largest palindrome number found in the given input range 
+	 */
 	public String getLargestPalindrome(String lowBound, String upBound){
 		
 		List<Integer> al = new ArrayList<Integer>();
 		
 		int lowerBound = Integer.valueOf(lowBound);
 		int upperBound = Integer.valueOf(upBound);
-		
-		System.out.println(lowerBound + "----" +upperBound);
 		
 		for(int i=lowerBound;i<=upperBound; i++ ){
 			int j = i;
@@ -127,17 +131,13 @@ public class UserInput extends Application{
 			}
 			
 			if(sum == i)
-			al.add(i);	
+			al.add(i);	//adding the element to the list if its a palindrome number
 		}
 		
-		al.forEach(System.out::println);
+		al.forEach(System.out::println); // printing all the palindrome numbers from the list.
 
-		return	al.stream().max(Integer::compare).get().toString();
-		
+		return	al.stream().max(Integer::compare).get().toString();   // returning the max element from the stream.
 
-		
-		
 	}
-
 	
 }
