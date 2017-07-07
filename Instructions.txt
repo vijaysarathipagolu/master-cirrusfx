@@ -1,0 +1,5 @@
+Instructions to run a jar file:
+
+1. Please install Java runtime environment (JRE) if  it's not already installed.
+2. You can run a jar file by either double clicking on it or by using the command line/terminal 
+   java -jar <jarfilename.jar>
