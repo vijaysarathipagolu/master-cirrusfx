@@ -6,6 +6,7 @@ package com.cirrus.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -29,6 +30,8 @@ import javafx.stage.Stage;
  */
 public class UserInput extends Application{
 
+	
+	
 	public static void main(String[] args){
 		launch(args);
 	}
@@ -36,11 +39,10 @@ public class UserInput extends Application{
 	@Override
 	public void start(Stage arg0) throws Exception {
 		// TODO Auto-generated method stub
-	
 		
 		arg0.setTitle("CirrsuFx Palindrome Search");
 		BorderPane bPane = new BorderPane();
-		bPane.setPadding(new Insets(20,50,50,50));
+		bPane.setPadding(new Insets(20,70,70,70));
 		
 		
 		HBox hb = new HBox();
@@ -78,12 +80,25 @@ public class UserInput extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
+				String result="";Text searchResult = null;
+				try{
 				String lowBound = lowerBoundTxt.getText().toString();
 				String upBound = upperBoundTxt.getText().toString();
-				String	result = getLargestPalindrome(lowBound, upBound);
-				Text searchResult = new Text("The largest Palindrome Number in the range is: " +result);
+				result = getLargestPalindrome(lowBound, upBound);
+				searchResult = new Text("The largest Palindrome Number in the range is: " +result);
 				searchResult.setFont(Font.font("Times New",FontWeight.BOLD,10));
 				gridPane.add(searchResult,1,3);
+				}catch(NoSuchElementException ne){
+					System.out.println(ne.getMessage());
+					searchResult = new Text("The Lower, Upper bound values can't be negative");
+					searchResult.setFont(Font.font("Times New",FontWeight.BOLD,10));
+					gridPane.add(searchResult,1,3);
+				}catch(NumberFormatException nf){
+					System.out.println(nf.getMessage());
+					searchResult = new Text("The input bound values can't be empty");
+					searchResult.setFont(Font.font("Times New",FontWeight.BOLD,10));
+					gridPane.add(searchResult,1,3);
+				}
 			}
 		});
 		
@@ -100,6 +115,8 @@ public class UserInput extends Application{
 		
 		int lowerBound = Integer.valueOf(lowBound);
 		int upperBound = Integer.valueOf(upBound);
+		
+		System.out.println(lowerBound + "----" +upperBound);
 		
 		for(int i=lowerBound;i<=upperBound; i++ ){
 			int j = i;
